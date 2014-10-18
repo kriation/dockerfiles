@@ -1,6 +1,8 @@
-# base dockerfile provided by seetheprogress
+# Ubuntu image provided by SeeTheProgress
 FROM ubuntu:14.10
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
+
+# Prevent interactive installs
 ENV DEBIAN_FRONTEND noninteractive
 
 # Work around initramfs-tools running on kernel 'upgrade': <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189>
@@ -19,6 +21,8 @@ RUN echo 'force-unsafe-io' | tee /etc/dpkg/dpkg.cfg.d/02apt-speedup
 RUN echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";};' | tee /etc/apt/apt.conf.d/no-cache
 RUN echo 'Acquire::http {No-Cache=True;};' | tee /etc/apt/apt.conf.d/no-http-cache
 
-RUN apt-get update -y && apt-get dist-upgrade -y && apt-get clean
+# Update and upgrade
+RUN apt-get update -y && apt-get -y dist-upgrade && apt-get clean
 
+# Cleanup
 RUN rm -rf /var/cache/apt/*
