@@ -11,7 +11,13 @@ RUN echo "#!/bin/sh\nexit 101" >/usr/sbin/policy-rc.d
 RUN chmod +x /usr/sbin/policy-rc.d
 
 # Install necessary packages
-RUN apt-get update && apt-get install -y slapd ldap-utils
+RUN apt-get update && \
+    apt-get install -y \
+      slapd \
+      ldap-utils && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/*
 
 # Expose ldap port
 expose 389
