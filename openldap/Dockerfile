@@ -3,7 +3,6 @@ FROM seetheprogress/base:v0.1
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
 
 # Prevent interactive installs
-LC_ALL=c
 DEBIAN_FRONTEND=noninteractive
 
 # Install necessary packages
