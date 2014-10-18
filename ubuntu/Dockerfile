@@ -22,8 +22,8 @@ RUN echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";
 RUN echo 'Acquire::http {No-Cache=True;};' | tee /etc/apt/apt.conf.d/no-http-cache
 
 # Update, upgrade and cleanup
-RUN apt-get update -y && \
-    apt-get -y dist-upgrade && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/apt/*
+RUN apt-get update -y \
+    && apt-get -y dist-upgrade \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/*
