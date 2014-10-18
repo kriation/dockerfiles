@@ -21,8 +21,9 @@ RUN echo 'force-unsafe-io' | tee /etc/dpkg/dpkg.cfg.d/02apt-speedup
 RUN echo 'DPkg::Post-Invoke {"/bin/rm -f /var/cache/apt/archives/*.deb || true";};' | tee /etc/apt/apt.conf.d/no-cache
 RUN echo 'Acquire::http {No-Cache=True;};' | tee /etc/apt/apt.conf.d/no-http-cache
 
-# Update and upgrade
-RUN apt-get update -y && apt-get -y dist-upgrade && apt-get clean
-
-# Cleanup
-RUN rm -rf /var/cache/apt/*
+# Update, upgrade and cleanup
+RUN apt-get update -y && \
+    apt-get -y dist-upgrade && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/cache/apt/*
