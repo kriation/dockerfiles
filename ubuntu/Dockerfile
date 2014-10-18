@@ -1,5 +1,5 @@
 # base dockerfile provided by seetheprogress
-FROM ubuntu:14.04
+FROM ubuntu:14.10
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
 ENV DEBIAN_FRONTEND noninteractive
 
