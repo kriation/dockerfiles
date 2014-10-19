@@ -12,7 +12,7 @@ RUN chmod +x /usr/sbin/policy-rc.d
 
 # Install necessary packages
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
       slapd \
       ldap-utils \
     && apt-get clean \
