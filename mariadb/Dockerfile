@@ -8,6 +8,9 @@ ENV KEY 0xcbcb082a1bb943db
 ENV MARIADB_VERSION 10.1
 ENV MARIADB_MIRROR http://ftp.osuosl.org/pub
 ENV UBUNTU_VERSION trusty
+ENV CUSTOM_DATA_DIR /custom/data
+ENV CUSTOM_CONFIG_DIR /custom/configuration
+ENV CUSTOM_SECRETS_DIR /custom/secrets
 
 # Add signing key for package verification
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $KEY
@@ -30,11 +33,22 @@ ENTRYPOINT ["/entrypoint.sh"]
 RUN rm -rf /var/lib/mysql
 
 # Use custom directories
-RUN mkdir -p /custom/data/mysql \
-    && mkdir -p /custom/configuration \
-    && mkdir -p /custom/secrets
+RUN mkdir -p $CUSTOM_DATA_DIR \
+    && mkdir -p $CUSTOM_CONFIG_DIR \
+    && mkdir -p $CUSTOM_SECRETS_DIR
 
-VOLUME /custom/data /custom/configuration /custom/secrets
+# Make default directories clear
+RUN touch $CUSTOM_DATA_DIR/DEFAULT \
+    && touch $CUSTOM_CONFIG_DIR/DEFAULT \
+    && touch $CUSTOM_SECRETS_DIR/DEFAULT
+
+# Declare volumes
+VOLUME $CUSTOM_DATA_DIR $CUSTOM_CONFIG_DIR $CUSTOM_SECRETS_DIR
+
+# Enable overwriting settings via conf.d in config directory
+# TODO: replace /etc/mysql/conf.d with $CUSTOM_CONFIG_DIR/conf.d
 
 EXPOSE 3306
-CMD ["mysqld", "--datadir=/custom/data/mysql", "--user=mysql"]
+
+# Use shell not exec for substitution to be available
+CMD mysqld --datadir=$CUSTOM_DATA_DIR --user=mysql
