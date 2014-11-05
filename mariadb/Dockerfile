@@ -30,29 +30,27 @@ RUN apt-get update \
          mariadb-server \
     && rm -rf /var/lib/apt/lists/*
 
-# Add entrypoint script to enforce ENV settings and suggestions
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-
 # Cleanup mysql data directory
 RUN rm -rf /var/lib/mysql
 
 # Use custom directories
 RUN mkdir -p $CUSTOM_DATA_DIR \
     && mkdir -p $CUSTOM_CONFIG_DIR \
-    && mkdir -p $CUSTOM_SECRETS_DIR
+    && mkdir -p $CUSTOM_SECRETS_DIR \
+    && mkdir -p /custom/default/data
 
 # Make default directories clear
 RUN touch $CUSTOM_DATA_DIR/DEFAULT \
     && touch $CUSTOM_CONFIG_DIR/DEFAULT \
     && touch $CUSTOM_SECRETS_DIR/DEFAULT
 
-# Declare volumes
-VOLUME $CUSTOM_DATA_DIR $CUSTOM_CONFIG_DIR $CUSTOM_SECRETS_DIR
-
 # Enable overwriting settings via conf.d in config directory
 # TODO: replace /etc/mysql/conf.d with $CUSTOM_CONFIG_DIR/conf.d
+
+# Add entrypoint script to enforce ENV settings and suggestions
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 3306
 
