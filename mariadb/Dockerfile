@@ -3,6 +3,12 @@ FROM seetheprogress/base:v0.1
 
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
 
+# ENVs can be provided via ENV files inside the config and secrets dir.
+# Following mandatory ENVs will be used:
+# MYSQL_ROOT_PASSWORD
+# Following optional ENVs will be used, if provided:
+# MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
+
 # Use ENVs for easier editing
 ENV KEY 0xcbcb082a1bb943db
 ENV MARIADB_VERSION 10.1
