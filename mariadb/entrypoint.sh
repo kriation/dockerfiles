@@ -7,7 +7,7 @@ if [ -a "$CUSTOM_CONFIG_DIR/DEFAULT" ]; then
     echo >&2 "Default configuration directory in use."
     echo >&2 "Configurations can be provided via volume at $CUSTOM_CONFIG_DIR."
     echo >&2 "mysqld configuration will be read from $CUSTOM_CONFIG_DIR/conf.d/*."
-    echo >&2 "ENVs will be read from &CUSTOM_CONFIG_DIR/ENV."
+    echo >&2 "ENVs will be read from $CUSTOM_CONFIG_DIR/ENV."
     echo >&2 "$delimiter"
 else
     $CUSTOM_CONFIG_DIR/ENV
