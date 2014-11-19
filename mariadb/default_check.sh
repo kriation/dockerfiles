@@ -8,7 +8,7 @@ if [ -a "$CUSTOM_CONFIG_DIR/DEFAULT" ]; then
     echo >&2 "$delimiter"
 fi
 
-if [ -a "$CUSTOM_SECRETS_DIR/DEFAULT" ]; then
+if [ -a "$CUSTOM_SECRET_DIR/DEFAULT" ]; then
     echo >&2 "Default secret directory in use."
     echo >&2 "Keys/secrets can be provided via volume at $CUSTOM_SECRET_DIR."
     echo >&2 "Secure ENVs will be read from $CUSTOM_SECRET_DIR/ENV."
