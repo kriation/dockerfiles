@@ -14,9 +14,6 @@ ENV GPG_KEY 0xcbcb082a1bb943db
 ENV MARIADB_VERSION 10.1
 ENV MARIADB_MIRROR http://ftp.osuosl.org/pub
 ENV UBUNTU_VERSION trusty
-ENV CUSTOM_DATA_DIR /con/data
-ENV CUSTOM_CONFIG_DIR /con/configuration
-ENV CUSTOM_SECRET_DIR /con/secret
 
 # Add signing key for package verification
 RUN apt-key adv --recv-keys --keyserver keyserver.ubuntu.com $GPG_KEY
@@ -33,26 +30,27 @@ RUN apt-get update \
 # Cleanup mysql data directory
 RUN rm -rf /var/lib/mysql
 
-# Use custom directories
-RUN mkdir -p $CUSTOM_DATA_DIR \
-    && mkdir -p $CUSTOM_CONFIG_DIR \
-    && mkdir -p $CUSTOM_SECRET_DIR \
+# Use container directories
+RUN mkdir -p /con/data \
+    && mkdir -p /con/configuration \
+    && mkdir -p /con/secret \
 
 # Make default directories clear
-RUN touch $CUSTOM_DATA_DIR/DEFAULT \
-    && touch $CUSTOM_CONFIG_DIR/DEFAULT \
-    && touch $CUSTOM_SECRET_DIR/DEFAULT
+RUN touch /con/data/DEFAULT \
+    && touch /con/configuration/DEFAULT \
+    && touch /con/secret
 
 # Enable overwriting settings via conf.d in config directory
-# TODO: replace /etc/mysql/conf.d with $CUSTOM_CONFIG_DIR/conf.d
+# TODO: replace /etc/mysql/conf.d with /con/configuration/conf.d
 
 # Add entrypoint script to enforce ENV settings and suggestions
 COPY entrypoint.sh /entrypoint.sh
 COPY default_check.sh /default_check.sh
-RUN chmod +x /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh /default_check.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 3306
 
 # Use shell not exec for substitution to be available
-CMD mysqld --datadir=$CUSTOM_DATA_DIR --user=mysql
+CMD ["mysqld", "--datadir=/con/data", "--user=mysql"]

@@ -1,22 +1,27 @@
-#/bin/bash
+#!/bin/bash
 set -e
 
 ./default_check.sh
 
-# Establish ENVs
-./$CUSTOM_CONFIG_DIR/ENV
-./$CUSTOM_SECRET_DIR/ENV
+# Source ENVs
+if [ -a "/con/configuration/ENV" ]; then
+    source /con/configuration/ENV
+fi
 
-if [ -z "$(ls -A $CUSTOM_DATA_DIR)" -a "${1%_safe}" = 'mysqld' ]; then
+if [ -a "/con/secret/ENV" ]; then
+    source /con/secret/ENV
+fi
+
+if [ -z "$(ls -A /con/data)" -a "${1%_safe}" = 'mysqld' ]; then
     echo >&2 "ERROR: database is uninitialized."
     if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
         echo >&2 "No MYSQL_ROOT_PASSWORD was provided."
-        echo >&2 "Add one via a volume and $CUSTOM_CONFIG_DIR/ENV."
+        echo >&2 "Add one via a volume and /con/configuration/ENV."
         echo >&2 "Or via -e MYSQL_ROOT_PASSWORD (not recommended)."
         exit 1
     fi
 
-    mysql_install_db --data=$CUSTOM_DATA_DIR
+    mysql_install_db --data=/con/data
 
     # These statements _must_ be on individual lines, and _must_ end with
     # semicolons (no line breaks or comments are permitted).
@@ -47,9 +52,9 @@ EOSQL
 fi
 
 # Adjust owner and permissions
-chown -R mysql:mysql $CUSTOM_DATA_DIR
-chmod -R 0744 $CUSTOM_DATA_DIR
+chown -R mysql:mysql /con/data
+chmod -R 0744 /con/data
 
 # TODO: Any permission changes needed for config dir?
-chown -R mysql:mysql $CUSTOM_CONFIG_DIR
+chown -R mysql:mysql /con/configuration
 exec "$@"
