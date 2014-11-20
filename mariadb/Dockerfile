@@ -53,10 +53,6 @@ RUN touch /con/proc/DEFAULT \
 RUN chmod -R 744 /con
 RUN chown -R mysql:mysql /con
 
-# Enable overwriting settings via conf.d in config directory
-RUN mkdir -p /con/configuration/conf.d
-RUN echo "!includedir /con/configuration/conf.d" >> /etc/mysql/my.cnf
-
 # Add entrypoint script to enforce ENV settings and suggestions
 COPY entrypoint.sh /con/context/entrypoint.sh
 COPY default_check.sh /con/context/default_check.sh
@@ -69,6 +65,7 @@ EXPOSE 3306
 # Use shell not exec for substitution to be available
 CMD ["mysqld", \
     "--datadir=/con/data", \
+    "--defaults-extra-file=/con/configuration/my.conf", \
     "--log-bin=/con/log/mariadb-bin", \
     "--log-bin-index=/con/log/mariadb-bin.index", \
     "--user=mysql"]
