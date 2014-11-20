@@ -6,7 +6,7 @@ if [ -a "/con/configuration/DEFAULT" ]; then
     echo >&2 "Default configuration directory in use."
     echo >&2 "Configurations can be provided via volume at /con/configuration."
     echo >&2 "mysqld configuration will be read from /con/configuration/conf.d/*."
-    echo >&2 "ENVs will be read from $CON_CONFIG_DIR/ENV."
+    echo >&2 "ENVs will be read from /con/configuration/ENV."
     echo >&2 "$delimiter"
 fi
 
