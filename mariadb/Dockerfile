@@ -49,7 +49,12 @@ RUN touch /con/proc/DEFAULT \
     && touch /con/secret/DEFAULT \
     && echo "DEFAULT" > /con/seed
 
+# Set default permissions
+RUN chmod -R 744 /con
+RUN chown -R mysql:mysql /con
+
 # Enable overwriting settings via conf.d in config directory
+RUN mkdir -p /con/configuration/conf.d
 RUN echo "!includedir /con/configuration/conf.d" >> /etc/mysql/my.cnf
 
 # Add entrypoint script to enforce ENV settings and suggestions
@@ -62,4 +67,8 @@ ENTRYPOINT ["/con/context/entrypoint.sh"]
 EXPOSE 3306
 
 # Use shell not exec for substitution to be available
-CMD ["mysqld", "--datadir=/con/data", "--user=mysql"]
+CMD ["mysqld", \
+    "--datadir=/con/data", \
+    "--log-bin=/con/log/mariadb-bin", \
+    "--log-bin-index=/con/log/mariadb-bin.index", \
+    "--user=mysql"]
