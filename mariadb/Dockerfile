@@ -31,25 +31,33 @@ RUN apt-get update \
 RUN rm -rf /var/lib/mysql
 
 # Use container directories
-RUN mkdir -p /con/data \
+RUN mkdir -p /con/proc \
+    && mkdir -p /con/data \
+    && mkdir -p /con/log \
     && mkdir -p /con/configuration \
-    && mkdir -p /con/secret \
+    && mkdir -p /con/var \
+    && mkdir -p /con/context \
+    && mkdir -p /con/secret 
 
 # Make default directories clear
-RUN touch /con/data/DEFAULT \
+RUN touch /con/proc/DEFAULT \
+    && touch /con/data/DEFAULT \
+    && touch /con/log/DEFAULT \
     && touch /con/configuration/DEFAULT \
-    && touch /con/secret/DEFAULT
+    && touch /con/var/DEFAULT \
+    && touch /con/context/DEFAULT \
+    && touch /con/secret/DEFAULT \
+    && echo "DEFAULT" > /con/seed
 
 # Enable overwriting settings via conf.d in config directory
 # TODO: replace /etc/mysql/conf.d with /con/configuration/conf.d
 
 # Add entrypoint script to enforce ENV settings and suggestions
-COPY entrypoint.sh /entrypoint.sh
-COPY default_check.sh /default_check.sh
-RUN chmod +x /entrypoint.sh /default_check.sh
+COPY entrypoint.sh /con/context/entrypoint.sh
+COPY default_check.sh /con/context/default_check.sh
+RUN chmod +x /con/context/entrypoint.sh /con/context/default_check.sh
 
-WORKDIR /usr/local/mysql
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/con/context/entrypoint.sh"]
 
 EXPOSE 3306
 

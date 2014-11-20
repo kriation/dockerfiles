@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-#./default_check.sh
+source /con/context/default_check.sh
 
 # Source ENVs
 if [ -a "/con/configuration/ENV" ]; then
