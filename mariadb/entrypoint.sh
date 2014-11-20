@@ -53,9 +53,7 @@ EOSQL
 fi
 
 # Adjust owner and permissions
-chown -R mysql:mysql /con/data
-chmod -R 0744 /con/data
+chown -R mysql:mysql /con/data /con/log
+chmod -R 0744 /con/data /con/log
 
-# TODO: Any permission changes needed for config dir?
-chown -R mysql:mysql /con/configuration
 exec "$@"
