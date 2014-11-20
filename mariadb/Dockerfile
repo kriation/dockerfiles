@@ -50,7 +50,7 @@ RUN touch /con/proc/DEFAULT \
     && echo "DEFAULT" > /con/seed
 
 # Enable overwriting settings via conf.d in config directory
-# TODO: replace /etc/mysql/conf.d with /con/configuration/conf.d
+RUN echo "!includedir /con/configuration/conf.d" >> /etc/mysql/my.cnf
 
 # Add entrypoint script to enforce ENV settings and suggestions
 COPY entrypoint.sh /con/context/entrypoint.sh
