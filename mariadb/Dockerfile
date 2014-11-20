@@ -38,7 +38,7 @@ RUN mkdir -p /con/data \
 # Make default directories clear
 RUN touch /con/data/DEFAULT \
     && touch /con/configuration/DEFAULT \
-    && touch /con/secret
+    && touch /con/secret/DEFAULT
 
 # Enable overwriting settings via conf.d in config directory
 # TODO: replace /etc/mysql/conf.d with /con/configuration/conf.d
@@ -46,8 +46,9 @@ RUN touch /con/data/DEFAULT \
 # Add entrypoint script to enforce ENV settings and suggestions
 COPY entrypoint.sh /entrypoint.sh
 COPY default_check.sh /default_check.sh
-
 RUN chmod +x /entrypoint.sh /default_check.sh
+
+WORKDIR /usr/local/mysql
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 3306

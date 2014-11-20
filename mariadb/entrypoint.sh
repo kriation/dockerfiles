@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-./default_check.sh
+#./default_check.sh
 
 # Source ENVs
 if [ -a "/con/configuration/ENV" ]; then
@@ -12,7 +12,7 @@ if [ -a "/con/secret/ENV" ]; then
     source /con/secret/ENV
 fi
 
-if [ -z "$(ls -A /con/data)" -a "${1%_safe}" = 'mysqld' ]; then
+if [ ! -d "/con/data/mysql" -a "${1%_safe}" = 'mysqld' ]; then
     echo >&2 "ERROR: database is uninitialized."
     if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
         echo >&2 "No MYSQL_ROOT_PASSWORD was provided."
