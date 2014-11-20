@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-source /con/context/default_check.sh
+./con/context/default_check.sh
 
 # Source ENVs
 if [ -a "/con/configuration/ENV" ]; then
@@ -16,7 +16,8 @@ if [ ! -d "/con/data/mysql" -a "${1%_safe}" = 'mysqld' ]; then
     echo >&2 "ERROR: database is uninitialized."
     if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
         echo >&2 "No MYSQL_ROOT_PASSWORD was provided."
-        echo >&2 "Add one via a volume and /con/configuration/ENV."
+        echo >&2 "Add one via a volume at /con/configuration"
+        echo >&2 "with /con/configuration/ENV and you password."
         echo >&2 "Or via -e MYSQL_ROOT_PASSWORD (not recommended)."
         exit 1
     fi
