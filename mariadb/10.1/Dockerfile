@@ -1,5 +1,7 @@
 # MariaDB image provided by SeeTheProgress
-FROM ubuntu:14.04
+#FROM ubuntu:14.04
+# Use updated ubuntu image
+FROM seetheprogress/ubuntu:14.04
 
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
 
