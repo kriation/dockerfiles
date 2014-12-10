@@ -3,6 +3,28 @@ FROM ubuntu:12.04
 
 MAINTAINER Michael Grosser <docker@seetheprogress.net>
 
+# Use container directories
+RUN mkdir -p /con/proc \
+    && mkdir -p /con/data \
+    && mkdir -p /con/log \
+    && mkdir -p /con/configuration \
+    && mkdir -p /con/var \
+    && mkdir -p /con/context \
+    && mkdir -p /con/secret
+
+# Make default directories clear
+RUN touch /con/proc/DEFAULT \
+    && touch /con/data/DEFAULT \
+    && touch /con/log/DEFAULT \
+    && touch /con/configuration/DEFAULT \
+    && touch /con/var/DEFAULT \
+    && touch /con/context/DEFAULT \
+    && touch /con/secret/DEFAULT \
+    && echo "DEFAULT" > /con/seed
+
+COPY default_check.sh /con/context/default_check.sh
+RUN /con/context/default_check.sh
+
 # Prevent interactive installs
 ENV DEBIAN_FRONTEND noninteractive
 
