@@ -20,6 +20,8 @@ RUN touch /con/proc/DEFAULT \
     && touch /con/var/DEFAULT \
     && touch /con/context/DEFAULT \
     && touch /con/secret/DEFAULT \
+    && touch /con/configuration/ENV \
+    && touch /con/secret/ENV \
     && echo "DEFAULT" > /con/seed
 
 COPY default_check.sh /con/context/default_check.sh
