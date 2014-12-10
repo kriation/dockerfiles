@@ -23,7 +23,7 @@ RUN touch /con/proc/DEFAULT \
     && echo "DEFAULT" > /con/seed
 
 COPY default_check.sh /con/context/default_check.sh
-RUN /con/context/default_check.sh
+RUN chmod -x /con/context/default_check.sh
 
 # Prevent interactive installs
 ENV DEBIAN_FRONTEND noninteractive
