@@ -44,7 +44,6 @@ ENTRYPOINT ["/con/context/entrypoint.sh"]
 
 EXPOSE 3306
 
-# Use shell not exec for substitution to be available
 CMD ["mysqld", \
     "--datadir=/con/data", \
     "--defaults-extra-file=/con/configuration/my.conf", \
