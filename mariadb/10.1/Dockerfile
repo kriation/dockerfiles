@@ -25,7 +25,7 @@ RUN echo "deb $MARIADB_MIRROR/mariadb/repo/$MARIADB_VERSION/ubuntu $UBUNTU_VERSI
 
 # Install mariadb server from packages
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
          mariadb-server \
     && rm -rf /var/lib/apt/lists/*
 
