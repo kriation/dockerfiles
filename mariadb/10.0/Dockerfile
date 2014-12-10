@@ -38,7 +38,7 @@ RUN chown -R mysql:mysql /con
 
 # Add entrypoint script to enforce ENV settings and suggestions
 COPY entrypoint.sh /con/context/entrypoint.sh
-RUN chmod +x /con/context/entrypoint
+RUN chmod +x /con/context/entrypoint.sh
 
 ENTRYPOINT ["/con/context/entrypoint.sh"]
 
