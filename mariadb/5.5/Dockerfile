@@ -45,8 +45,8 @@ ENTRYPOINT ["/con/context/entrypoint.sh"]
 EXPOSE 3306
 
 CMD ["mysqld", \
-    "--datadir=/con/data", \
     "--defaults-extra-file=/con/configuration/my.conf", \
+    "--datadir=/con/data", \
     "--log-bin=/con/log/mariadb-bin", \
     "--log-bin-index=/con/log/mariadb-bin.index", \
     "--user=mysql"]
